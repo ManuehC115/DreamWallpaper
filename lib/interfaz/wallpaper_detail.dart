@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:image_downloader/image_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class WallpaperDetailScreen extends StatefulWidget {
@@ -22,7 +21,7 @@ class _WallpaperDetailScreenState extends State<WallpaperDetailScreen> {
 
     if (status.isGranted) {
       try {
-        await ImageDownloader.downloadImage(widget.imageUrl);
+        //await ImageDownloader.downloadImage(widget.imageUrl);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Imagen descargada con éxito')),
         );
