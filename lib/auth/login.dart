@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:async'; // Impor
+import 'dart:async';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -43,8 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: SafeArea(
+        // Asegura que el contenido no se superponga con la barra de estado
         child: Container(
+          height: MediaQuery.of(context).size.height, // Ocupa toda la pantalla
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -56,100 +58,108 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Image.asset(
-                  'assets/logo3.png',
-                  height: 250, // Ajuste del tamaño para evitar desbordamiento
-                ),
-              ),
-              SizedBox(height: 5),
-              AnimatedOpacity(
-                opacity: _showError ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 500),
-                child: _errorMessage != null
-                    ? Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          _errorMessage!,
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      )
-                    : SizedBox.shrink(),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+          child: Center(
+            child: SingleChildScrollView(
+              // Desplazamiento solo si es necesario
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo3.png',
+                    height: MediaQuery.of(context).size.height *
+                        0.3, // Ajusta proporcionalmente
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                  SizedBox(height: 20),
+                  AnimatedOpacity(
+                    opacity: _showError ? 1.0 : 0.0,
+                    duration: Duration(milliseconds: 500),
+                    child: _errorMessage != null
+                        ? Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              _errorMessage!,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : SizedBox.shrink(),
                   ),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 25),
-              TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(color: Colors.white),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    style: TextStyle(color: Colors.white),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                  SizedBox(height: 25),
+                  TextField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: Colors.white),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
+                    obscureText: true,
+                    style: TextStyle(color: Colors.white),
                   ),
-                ),
-                obscureText: true,
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 50),
-              ElevatedButton(
-                onPressed: _login,
-                child: Text(
-                  'Iniciar Sesión',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  SizedBox(height: 40),
+                  ElevatedButton(
+                    onPressed: _login,
+                    child: Text(
+                      'Iniciar Sesión',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color.fromARGB(255, 5, 145, 232),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 90, vertical: 26),
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color.fromARGB(255, 5, 145, 232),
-                  padding: EdgeInsets.symmetric(horizontal: 90, vertical: 26),
-                ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/forgot-password');
+                    },
+                    child: Text(
+                      '¿Olvidaste tu contraseña?',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: Text(
+                      '¿No tienes cuenta? Regístrate',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/forgot-password');
-                },
-                child: Text(
-                  '¿Olvidaste tu contraseña?',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: Text(
-                  '¿No tienes cuenta? Regístrate',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
