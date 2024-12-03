@@ -1,15 +1,55 @@
-# Android
-# Build your Android project with Gradle.
-# Add steps that test, sign, and distribute the APK, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/android
-
 trigger:
-- main
+- main  # O la rama que desees monitorizar
 
 pool:
-  vmImage: 'macos-latest'
+  vmImage: 'ubuntu-latest'  # También puedes usar 'ubuntu-latest'
+
+variables:
+  flutterVersion: '3.10.6'  # Reemplaza con la versión de Flutter que uses
+  androidSdkVersion: '30.0.3'  # Versión de Android SDK
 
 steps:
+- task: UsePythonVersion@1
+  inputs:
+    versionSpec: '3.x'  # Asegúrate de usar una versión compatible
+
+# Instala Flutter
+- script: |
+    git clone https://github.com/ManuehC115/DreamWallpaper.git -b stable
+    export PATH="$PATH:`pwd`/flutter/bin"
+    flutter --version
+  displayName: 'Instalar Flutter'
+
+# Configura la versión de Flutter
+- script: |
+    export PATH="$PATH:`pwd`/flutter/bin"
+    flutter doctor
+  displayName: 'Verificar configuración Flutter'
+
+# Obtener dependencias de Flutter
+- script: |
+    export PATH="$PATH:`pwd`/flutter/bin"
+    flutter pub get
+  displayName: 'Obtener dependencias'
+
+# Compilar APK (o AAB para la Play Store)
+- script: |
+    export PATH="$PATH:`pwd`/flutter/bin"
+    flutter build apk --release
+  displayName: 'Compilar APK'
+
+# Firmar el APK
 - task: AndroidSigning@3
   inputs:
     apkFiles: '**/*.apk'
+    apksignerKeystoreFile: '$(KeystoreFile)'  # Asegúrate de definir estas variables en el panel de Azure DevOps
+    apksignerKeystorePassword: '$(KeystorePassword)'
+    apksignerKeyAlias: '$(KeyAlias)'
+    apksignerKeyPassword: '$(KeyPassword)'
+
+# Publicar el APK como un artefacto de Azure
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'build/app/outputs/flutter-apk/app-release.apk'
+    ArtifactName: 'app-release'
+    publishLocation: 'Container'
