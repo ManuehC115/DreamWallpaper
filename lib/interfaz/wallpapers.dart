@@ -87,6 +87,12 @@ class WallpaperScreen extends StatelessWidget {
             title: 'Cine',
             route: '/categoria/cine',
           ),
+          _buildCategoryListTile(
+            context,
+            icon: Icons.movie,
+            title: 'Pendiente',
+            route: '/categoria/cine',
+          ),
         ],
       ),
     );
