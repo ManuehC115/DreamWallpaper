@@ -133,7 +133,7 @@ class CategoryScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'Esta es la pantalla de $title',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.red),
         ),
       ),
     );
