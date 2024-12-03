@@ -9,9 +9,7 @@ variables:
   androidSdkVersion: '30.0.3'  # Versión de Android SDK
 
 steps:
-- task: UsePythonVersion@1
-  inputs:
-    versionSpec: '3.x'  # Asegúrate de usar una versión compatible
+
 
 # Instala Flutter
 - script: |
