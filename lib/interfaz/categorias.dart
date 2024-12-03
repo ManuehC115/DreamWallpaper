@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'buttom_nav.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,23 +11,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.grey[900], // Fondo negro grisáceo
+        scaffoldBackgroundColor: Color(0xFF424242), // Fondo negro grisáceo
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.black, // Color del AppBar
+          backgroundColor: Color(0xFF424242), // Color del AppBar
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
       home: CategoriesScreen(),
-      // routes: {
-      //   '/category1': (context) => CategoryScreen('Categoría 1'),
-      //   '/category2': (context) => CategoryScreen('Categoría 2'),
-      //   '/category3': (context) => CategoryScreen('Categoría 3'),
-      //   '/category4': (context) => CategoryScreen('Categoría 4'),
-      //   '/category5': (context) => CategoryScreen('Categoría 5'),
-      //   '/category6': (context) => CategoryScreen('Categoría 6'),
-      //   '/category7': (context) => CategoryScreen('Categoría 7'),
-      //   '/category8': (context) => CategoryScreen('Categoría 8'),
-      // },
+      routes: {
+        '/categoria/anime': (context) => CategoryScreen('Anime'),
+        '/categoria/heroes': (context) => CategoryScreen('Superheroes'),
+        '/categoria/naturaleza': (context) => CategoryScreen('Naturaleza'),
+        '/categoria/cultura': (context) => CategoryScreen('Cultura'),
+        '/categoria/arte': (context) => CategoryScreen('Arte'),
+        '/categoria/deportes': (context) => CategoryScreen('Deportes'),
+        '/categoria/tecnologia': (context) => CategoryScreen('Tecnología'),
+        '/categoria/cine': (context) => CategoryScreen('Cine'),
+      },
     );
   }
 }
@@ -57,55 +58,66 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Categorías'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Dos columnas
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 2, // Relación de aspecto
-          ),
-          itemCount: categoryNames.length, // Cambiado a la longitud del arreglo
-          //routeCount: categoryroutes.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, categoryroutes[index]);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.purple, Colors.deepPurple],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+    return BottomNavWrapper(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Categorías'),
+          backgroundColor:
+              Color(0xFF424242), // Color de fondo del AppBar (gris oscuro)
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Dos columnas
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 1.5, // Ajustado para mejorar la visualización
+            ),
+            itemCount:
+                categoryNames.length, // Cambiado a la longitud del arreglo
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  // Navegar a la pantalla de la categoría correspondiente
+                  Navigator.pushNamed(context, categoryroutes[index]);
+                },
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    categoryNames[index], // Usa el nombre del arreglo
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.purple, Colors.deepPurple],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        categoryNames[index], // Usa el nombre del arreglo
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
 
-// Pantallas de categorías individuales
 class CategoryScreen extends StatelessWidget {
   final String title;
 
@@ -116,6 +128,7 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        backgroundColor: Color(0xFF424242),
       ),
       body: Center(
         child: Text(

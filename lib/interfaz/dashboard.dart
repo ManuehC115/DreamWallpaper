@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    );
-  }
-}
+import 'buttom_nav.dart'; // Importa el componente
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,116 +7,84 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isTapped = false; // Controla el estado de expansión del botón
+  bool _isTapped = false;
   String _selectedRoute = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildAnimatedButton('Categoria', '/categoria'),
-            SizedBox(height: 20),
-            _buildAnimatedButton('Fondos populares', '/fondos_populares'),
-            SizedBox(height: 20),
-            _buildAnimatedButton('Fondos animados', '/fondos_animados'),
-            SizedBox(height: 20),
-            _buildAnimatedButton('Fondos Ultra HD', '/fondos_hd'),
-            SizedBox(height: 20),
-            _buildAnimatedButton('Fondos generados con IA', '/fondos_ia'),
-          ],
+    return BottomNavWrapper(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Dashboard'),
+          backgroundColor: Color(0xFF424242),
+        ),
+        body: Center(
+          // Centra el contenido en la pantalla
+          child: SingleChildScrollView(
+            // Desplazamiento si el contenido excede la pantalla
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment
+                    .center, // Centra verticalmente los elementos
+                crossAxisAlignment: CrossAxisAlignment
+                    .center, // Centra horizontalmente los elementos
+                children: [
+                  _buildAnimatedButton('Categoria', '/categoria'),
+                  SizedBox(height: 20),
+                  _buildAnimatedButton('Fondos populares', '/fondos_populares'),
+                  SizedBox(height: 20),
+                  _buildAnimatedButton('Fondos animados', '/fondos_animados'),
+                  SizedBox(height: 20),
+                  _buildAnimatedButton('Fondos Ultra HD', '/fondos_hd'),
+                  SizedBox(height: 20),
+                  _buildAnimatedButton('Fondos generados con IA', '/fondos_ia'),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  // Widget que construye cada botón animado
   Widget _buildAnimatedButton(String title, String route) {
     return GestureDetector(
       onTap: () {
         setState(() {
           _isTapped = true;
-          _selectedRoute = route; // Guarda la ruta seleccionada
+          _selectedRoute = route;
         });
-        // Retrasa la navegación hasta que la animación termine
         Future.delayed(Duration(milliseconds: 200), () {
           Navigator.pushNamed(context, route);
           setState(() {
-            _isTapped = false; // Resetea la animación después de navegar
+            _isTapped = false;
           });
         });
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
-        width: _isTapped && _selectedRoute == route
-            ? 320
-            : 300, // Expande el botón
-        height: _isTapped && _selectedRoute == route
-            ? 120
-            : 100, // Expande la altura
-        decoration: _isTapped && _selectedRoute == route
-            ? BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.purpleAccent, Colors.deepPurpleAccent],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              )
-            : BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.purple, Colors.deepPurple],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
+        width: _isTapped && _selectedRoute == route ? 320 : 300,
+        height: _isTapped && _selectedRoute == route ? 110 : 100,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: _isTapped && _selectedRoute == route
+                ? [Colors.purpleAccent, Colors.deepPurpleAccent]
+                : [Colors.purple, Colors.deepPurple],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Center(
           child: Text(
             title,
-            style: TextStyle(color: Colors.white, fontSize: 24),
+            style:
+                TextStyle(color: Colors.white, fontSize: 22), // Tamaño ajustado
           ),
         ),
       ),
     );
   }
 }
-
-// Define las rutas para las pantallas adicionales
-class Route1Screen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Categoria')),
-      body: Center(
-        child: Text(
-          'Esta es la pantalla de Categoria',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-
-class Route2Screen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Fondos populares')),
-      body: Center(
-        child: Text(
-          'Esta es la pantalla de Fondos populares',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-
-// Continúa agregando pantallas para las demás rutas

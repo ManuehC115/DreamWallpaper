@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../apis/pixabay.dart';
 import 'wallpaper_detail.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'buttom_nav.dart';
 
 class WallpaperScreen extends StatelessWidget {
   final String query;
@@ -10,12 +11,17 @@ class WallpaperScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Fondos de pantalla'),
+    return BottomNavWrapper(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Fondos de pantalla :)'),
+          backgroundColor:
+              Color(0xFF424242), // Color de fondo del AppBar (gris oscuro)
+          iconTheme: IconThemeData(color: Colors.white),
+        ), // Color de fondo del AppBar (gris oscuro)
+        drawer: _buildDrawer(context),
+        body: _buildWallpaperGrid(query),
       ),
-      drawer: _buildDrawer(context),
-      body: _buildWallpaperGrid(query),
     );
   }
 
